@@ -1,92 +1,193 @@
-*{
-    margin: 0;
-    padding: 0;
+* {
+	margin: 0;
+	padding: 0;
 }
 
 body {
-    background: linear-gradient(#17132e, #3859b4);
+	background: radial-gradient(
+		circle at center,
+		#2a3047 0%,
+		#1a2035 70%,
+		#101628 100%
+	);
+	min-height: 100vh;
+	overflow: hidden;
 }
 
 .events {
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @media (max-width: 480px) {
-        rotate: 90deg;
-        scale: 0.5;
-        
-    }
+	position: relative;
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	@media (max-width: 480px) {
+		rotate: 90deg;
+		scale: 0.5;
+	}
 }
 
 .event {
-    position: absolute;
-    background-color: blue;
-    width: 250px;
-    aspect-ratio: 9/16;
-    transition: transform 200ms ease-in-out;
-    background: #391fca;
-    color: #fff;
-    border-radius: 10px;
-    padding: 1rem;
-    border: 2px solid #fff;
-    box-shadow: -10px 0px 10px 1px rgba(0, 0, 0, 0.5);
+	position: absolute;
+	background-color: #1d2b4a; /* Darker, more subdued blue */
+	width: 250px;
+	aspect-ratio: 9/16;
+	transition: all 0.3s ease-in-out;
+	color: #d0d8ee; /* Slightly adjusted text color for better contrast */
+	border-radius: 10px;
+	padding: 1rem;
+	box-shadow: -10px 0px 10px 1px rgba(16, 22, 40, 0.7); /* Dark blue shadow */
+	border: 1px solid rgba(58, 79, 173, 0.3); /* Subtle border */
+	overflow: hidden; /* Ensure the gradient doesn't spill out */
 }
 
-.event.open{
-    @media (max-width: 480px) {
-        rotate: -90deg !important;
-        transform-origin: center !important;
-        transition: rotate 200ms ease-in-out !important;
-    }
+/* Add a container for the content to ensure the background doesn't affect it */
+.event .content-container {
+	position: relative;
+	z-index: 1;
+	height: 100%;
 }
+
+/* Remove the ::before element with rotating border */
 
 .event:hover {
-    scale: 1.1;
+	box-shadow: 0 0 25px rgba(90, 120, 220, 0.7); /* Brighter, more visible glow on hover */
+	transform: scale(
+		1.07
+	); /* Slightly larger scale for more noticeable effect */
+	border-color: rgba(
+		106,
+		129,
+		221,
+		0.8
+	); /* Brighter, more visible border on hover */
 }
 
-.event .front .name{
-    position: absolute;
-    transform: rotate(-90deg) translate(-50%, 0);
-    transform-origin: left;
-    top: 50%;
-    left: 10%;
-    color: white;
-    width: 100%;
-    text-align: center;
-    font-size: 2rem;
-    white-space: nowrap;
+/* Remove rotateBorder animation */
+
+@keyframes borderGlow {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
-.event .back{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    height: 100%;
-    opacity: 0;
+.event.open {
+	@media (max-width: 480px) {
+		rotate: -90deg !important;
+		transform-origin: center !important;
+		transition: rotate 200ms ease-in-out !important;
+	}
 }
 
-.event .back > *{
-    rotate: y 180deg;
-    transform-origin: center;
+.event .front .name {
+	position: absolute;
+	transform: rotate(-90deg) translate(-50%, 0);
+	transform-origin: left;
+	top: 50%;
+	left: 10%;
+	color: #ffffff; /* Brighter white for event names */
+	width: 100%;
+	text-align: center;
+	font-size: 2rem;
+	white-space: nowrap;
+}
+
+.event .back {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	height: 100%;
+	opacity: 0;
+}
+
+.event .back > * {
+	rotate: y 180deg;
+	transform-origin: center;
+	z-index: 100;
+}
+
+.event .name.opened {
+	transform: none;
+	position: relative;
+	text-align: center;
+	top: auto;
+	left: auto;
+	color: #ffffff; /* Brighter white for opened event names */
+}
+
+.event img {
+	width: 150px;
+}
+
+.event .btn {
+	justify-self: flex-end;
+	background-color: #2d395a; /* Dark blue button */
+	padding: 8px 16px;
+	border-radius: 5px;
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	border: 1px solid rgba(106, 129, 221, 0.4);
+	transform: translateY(0);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 100;
 }
 
-.event .name.opened{
-    transform: none;
-    position: relative;
-    text-align: center;
-    top: auto;
-    left: auto;
+.event .btn::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 255, 255, 0.2),
+		transparent
+	);
+	transition: 0.5s;
 }
 
-.event img{
-    width: 150px;
+.event .btn:hover {
+	background-color: #3a4f7a; /* Lighter blue on hover */
+	transform: translateY(-3px);
+	box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15);
+	border-color: rgba(106, 129, 221, 0.8);
 }
 
-.event .btn{
-    justify-self: flex-end;
+.event .btn:active {
+	transform: translateY(-1px);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.event .btn:hover::before {
+	left: 100%;
+}
+
+.event .btn a {
+	color: #e0e0e0; /* Light gray text */
+	text-decoration: none;
+	font-weight: bold;
+	letter-spacing: 0.5px;
+	display: block;
+	position: relative;
+	z-index: 1;
+}
+
+.event .desc {
+	color: #d0d8ee; /* Standard text color for descriptions */
+}
+
+.event .price {
+	color: #a0c4ff; /* Light blue for price to make it stand out */
+	font-weight: bold;
 }

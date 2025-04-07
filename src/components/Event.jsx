@@ -21,7 +21,14 @@ const Event = ({ name, desc, price, number, length }) => {
 		transformStyle: "preserve-3d",
 		transformOrigin: "left center",
 		backfaceVisibility: "hidden",
-		zIndex: 2, // Left page on top when closed
+		zIndex: 2,
+	};
+
+	const backStyles = {
+		position: "absolute",
+		width: "100%",
+		height: "100%",
+		zIndex: 1,
 	};
 
 	useGSAP(() => {
@@ -80,11 +87,13 @@ const Event = ({ name, desc, price, number, length }) => {
 			gsap.to(`#event-${number} .front`, {
 				opacity: 0,
 				duration: 0.3,
+				zIndex: 1,
 				ease: "power2.inOut",
 				onComplete: () => {
 					gsap.to(`#event-${number} .back`, {
 						opacity: 1,
 						duration: 0.3,
+						zIndex: 2,
 						ease: "power2.inOut",
 					});
 				},
@@ -94,28 +103,30 @@ const Event = ({ name, desc, price, number, length }) => {
 				x: 50 * (number - mid),
 				y: Math.abs(3 * (number - mid)),
 				scale: 1,
-				rotateY: "360deg", // Left page returns to closed position
+				rotateY: "360deg",
 				rotateX: "0deg",
 				zIndex: number,
-				rotate: `${5 * (number - mid)}deg`, // Reset rotation
+				rotate: `${5 * (number - mid)}deg`,
 				duration: 0.6,
 				ease: "power2.inOut",
 			});
-
 			gsap.to(`#event-${number} .back`, {
 				opacity: 0,
 				duration: 0.3,
+				zIndex: 1,
 				ease: "power2.inOut",
 				onComplete: () => {
 					gsap.to(`#event-${number} .front`, {
 						opacity: 1,
 						duration: 0.3,
+						zIndex: 2,
 						ease: "power2.inOut",
 					});
 				},
 			});
 		}
 	};
+
 	return (
 		<div
 			className={`event ${isOpen ? "open" : ""}`}
@@ -125,22 +136,23 @@ const Event = ({ name, desc, price, number, length }) => {
 			onMouseOut={onMouseLeave}
 			onClick={onClick}
 		>
-			<div className="card" style={cardStyles}>
-				<div className="front" style={frontStyles}>
-					<h1 className="name">{name}</h1>
-				</div>
-				<div className="back">
-					<h1 className="name opened">{name}</h1>
-					<img src="/not-found.jpg" alt="" />
-					<p className="desc">{desc}</p>
-					<p className="price">Registration Fees: {price}</p>
-					<div className="btn">
-						<a href="https://www.google.com/">Register Now</a>
+			<div className="content-container">
+				<div className="card" style={cardStyles}>
+					<div className="front" style={frontStyles}>
+						<h1 className="name">{name}</h1>
+					</div>
+					<div className="back" style={backStyles}>
+						<h1 className="name opened">{name}</h1>
+						<img src="/not-found.jpg" alt="" />
+						<p className="desc">{desc}</p>
+						<p className="price">Registration Fees: {price}</p>
+						<div className="btn">
+							<a href="https://www.google.com/">Register Now</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
 };
-
 export default Event;
