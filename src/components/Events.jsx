@@ -81,6 +81,12 @@ const Events = () => {
                     length={eventlist.length}
 				/>
 			))}
+			<div className="event-form">
+				<input type="text" name="name" id="name" />
+				<input type="email" name="email" id="email" />
+				<input type="text" name="rollno" id="rollno" />
+				select
+			</div>
 		</div>
 	);
 };
