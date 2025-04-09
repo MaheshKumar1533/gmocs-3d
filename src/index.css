@@ -8,6 +8,7 @@
 
 body {
 	background: linear-gradient(135deg, #051a57 0%, #c9d9ff 100%);
+	/* background: #1B1A1C; */
 	background-size: 110vw 110vh;
 	background-repeat: no-repeat;
 	min-height: 100vh;
