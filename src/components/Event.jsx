@@ -3,7 +3,19 @@ import { useGSAP } from "@gsap/react";
 import { useState } from "react";
 gsap.registerPlugin(useGSAP);
 
-const Event = ({ name, desc, price, number, length }) => {
+const Event = ({
+	name,
+	desc,
+	price,
+	number,
+	length,
+	teamSize,
+	setTeamSize,
+	setEventName,
+	setEventId,
+	eventId,
+	category,
+}) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const mid = length / 2;
 
@@ -12,6 +24,15 @@ const Event = ({ name, desc, price, number, length }) => {
 		position: "relative",
 		width: "100%",
 		height: "100%",
+	};
+
+	const styles = {
+		backgroundColor: category === "technical" ? "#051a57" : "#c9d9ff",
+		color: category === "technical" ? "#051a57" : "#c9d9ff",
+		border:
+			category === "technical"
+				? "1px solid #c9d9ff"
+				: "1px solid #051a57",
 	};
 
 	const frontStyles = {
@@ -73,6 +94,11 @@ const Event = ({ name, desc, price, number, length }) => {
 	const onClick = () => {
 		setIsOpen(!isOpen);
 		if (!isOpen) {
+			gsap.to(".event-form", {
+				top: "110vh",
+				duration: 0.5,
+				ease: "power2.out",
+			});
 			gsap.to(`#event-${number}`, {
 				x: 0,
 				y: 0,
@@ -127,11 +153,22 @@ const Event = ({ name, desc, price, number, length }) => {
 		}
 	};
 
+	const onRegisterClick = () => {
+		setTeamSize(teamSize);
+		setEventName(name);
+		setEventId(eventId); // Set the event ID when registering
+		gsap.to(".event-form", {
+			top: "0vh",
+			duration: 0.5,
+			ease: "power2.out",
+		});
+	};
+
 	return (
 		<div
 			className={`event ${isOpen ? "open" : ""}`}
 			id={`event-${number}`}
-			style={{ zIndex: number }}
+			style={{ zIndex: number, ...styles }}
 			onMouseOver={onMouseHover}
 			onMouseOut={onMouseLeave}
 			onClick={onClick}
@@ -139,16 +176,56 @@ const Event = ({ name, desc, price, number, length }) => {
 			<div className="content-container">
 				<div className="card" style={cardStyles}>
 					<div className="front" style={frontStyles}>
-						<h1 className="name">{name}</h1>
+						<h1
+							className="name"
+							style={{
+								color:
+									category === "technical"
+										? "#c9d9ff"
+										: "#051a57",
+							}}
+						>
+							{name}
+						</h1>
 					</div>
 					<div className="back" style={backStyles}>
-						<h1 className="name opened">{name}</h1>
-						<img src="/not-found.jpg" alt="" />
-						<p className="desc">{desc}</p>
-						<p className="price">Registration Fees: {price}</p>
-						<div className="btn">
-							<a href="https://www.google.com/">Register Now</a>
-						</div>
+						<h1
+							className="name opened"
+							style={{
+								color:
+									category === "technical"
+										? "#c9d9ff"
+										: "#051a57",
+							}}
+						>
+							{name}
+						</h1>
+						<img src="static/img/not-found.jpg" alt="" />
+						<p
+							className="desc"
+							style={{
+								color:
+									category === "technical"
+										? "#c9d9ff"
+										: "#051a57",
+							}}
+						>
+							{desc}
+						</p>
+						<p
+							className="price"
+							style={{
+								color:
+									category === "technical"
+										? "#c9d9ff"
+										: "#051a57",
+							}}
+						>
+							Registration Fees: {price}
+						</p>
+						<button className="btn" onClick={onRegisterClick}>
+							Register Now
+						</button>
 					</div>
 				</div>
 			</div>
