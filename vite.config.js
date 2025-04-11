@@ -8,6 +8,9 @@ export default defineConfig({
 		rollupOptions: {
 			output: {
 				manualChunks: () => "everything.js", // all in one
+				entryFileNames: `assets/[name].js`,
+				chunkFileNames: `assets/[name].js`,
+				assetFileNames: `assets/[name].[ext]`,
 			},
 		},
 	},

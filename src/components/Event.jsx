@@ -168,7 +168,7 @@ const Event = ({
 		<div
 			className={`event ${isOpen ? "open" : ""}`}
 			id={`event-${number}`}
-			style={{ zIndex: number, ...styles }}
+			style={{ zIndex: number, ...styles, overflow: "auto" }}
 			onMouseOver={onMouseHover}
 			onMouseOut={onMouseLeave}
 			onClick={onClick}
@@ -219,6 +219,7 @@ const Event = ({
 									category === "technical"
 										? "#c9d9ff"
 										: "#051a57",
+								fontSize: ".5rem",
 							}}
 						>
 							Registration Fees: {price}

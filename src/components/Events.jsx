@@ -19,7 +19,7 @@ const Events = () => {
 			id: 6,
 			title: "Web Development",
 			description: "Learn and build web applications",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "technical",
 		},
@@ -27,7 +27,7 @@ const Events = () => {
 			id: 7,
 			title: "UI/UX",
 			description: "Design user-friendly interfaces",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "technical",
 		},
@@ -35,7 +35,7 @@ const Events = () => {
 			id: 11,
 			title: "Code Rush",
 			description: "Master the art of debugging code",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "technical",
 		},
@@ -43,7 +43,7 @@ const Events = () => {
 			id: 8,
 			title: "Tech Quest",
 			description: "Test your technical knowledge",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "technical",
 		},
@@ -51,15 +51,15 @@ const Events = () => {
 			id: 10,
 			title: "Ideathon",
 			description: "Pitch innovative ideas",
-			price: "100Rs",
-			teamSize: 1,
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
+			teamSize: 3,
 			category: "technical",
 		},
 		{
 			id: 13,
 			title: "Project Expo",
 			description: "Showcase your projects",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "technical",
 		},
@@ -67,7 +67,7 @@ const Events = () => {
 			id: 9,
 			title: "Paper Presentation",
 			description: "Showcase your projects",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "technical",
 		},
@@ -75,7 +75,7 @@ const Events = () => {
 			id: 4,
 			title: "Sudoku",
 			description: "Express creativity through writing",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "non-technical",
 		},
@@ -83,7 +83,7 @@ const Events = () => {
 			id: 3,
 			title: "Movie Mania",
 			description: "Capture moments with photography",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "non-technical",
 		},
@@ -91,7 +91,7 @@ const Events = () => {
 			id: 2,
 			title: "ShoDUOwn",
 			description: "Showcase your unique talents",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "non-technical",
 		},
@@ -99,7 +99,7 @@ const Events = () => {
 			id: 5,
 			title: "Synergy Challenge",
 			description: "Collaborate and solve challenges",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "non-technical",
 		},
@@ -107,7 +107,7 @@ const Events = () => {
 			id: 12,
 			title: "Scribble",
 			description: "Unleash your artistic skills",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "non-technical",
 		},
@@ -115,7 +115,7 @@ const Events = () => {
 			id: 1,
 			title: "E-Sports",
 			description: "Compete in gaming tournaments",
-			price: "100Rs",
+			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "non-technical",
 		},
@@ -229,7 +229,7 @@ const Events = () => {
 				<h1 className="technical-heading">Technical</h1>
 				<h1 className="non-technical-heading">Non-Technical</h1>
 				<form className="event-form">
-					<h1>Registration Form</h1>
+					<h1>Register - {eventName}</h1>
 					<div className="input-field">
 						<span>Name:</span>
 						<input
@@ -293,6 +293,9 @@ const Events = () => {
 							min={1}
 							max={10}
 							value={teamSize}
+							{...(eventName === "Ideathon"
+								? { disabled: true }
+								: {})}
 							onChange={onTeamSizeChange}
 						/>
 					</div>
@@ -306,7 +309,11 @@ const Events = () => {
 									className="member"
 									name={`member${index}`}
 									id={`member${index}`}
-									placeholder="Enter name (if applicable)"
+									placeholder={`Enter name ${
+										eventName !== "Ideathon"
+											? "(if applicable)"
+											: ""
+									}`}
 								/>
 							</div>
 						))}
