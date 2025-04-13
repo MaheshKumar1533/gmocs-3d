@@ -44,12 +44,13 @@ const Event = ({
 		backfaceVisibility: "hidden",
 		zIndex: 2,
 	};
-
+	
 	const backStyles = {
 		position: "absolute",
-		width: "100%",
-		height: "100%",
+		maxWidth: "100%",
+		maxHeight: "100%",
 		zIndex: 1,
+		overflowY: "auto",
 	};
 
 	useGSAP(() => {
@@ -183,6 +184,7 @@ const Event = ({
 									category === "technical"
 										? "#c9d9ff"
 										: "#051a57",
+								fontSize: "1.5rem", // Adjusted font size
 							}}
 						>
 							{name}
@@ -196,6 +198,7 @@ const Event = ({
 									category === "technical"
 										? "#c9d9ff"
 										: "#051a57",
+								fontSize: "1rem", // Adjusted font size
 							}}
 						>
 							{name}
@@ -208,6 +211,7 @@ const Event = ({
 									category === "technical"
 										? "#c9d9ff"
 										: "#051a57",
+								fontSize: "0.8rem", // Adjusted font size
 							}}
 						>
 							{desc}
@@ -219,7 +223,7 @@ const Event = ({
 									category === "technical"
 										? "#c9d9ff"
 										: "#051a57",
-								fontSize: ".5rem",
+								fontSize: "0.7rem", // Adjusted font size
 							}}
 						>
 							Registration Fees: {price}

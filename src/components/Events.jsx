@@ -8,7 +8,7 @@ const Events = () => {
 	const [name, setName] = useState("");
 	const [mobile, setMobile] = useState("");
 	const [rollno, setRollno] = useState("");
-	const [branch, setBranch] = useState("CSE");
+	const [branch, setBranch] = useState("");
 	const [teamSize, setTeamSize] = useState(1);
 	const [eventName, setEventName] = useState("");
 	const [eventId, setEventId] = useState(null);
@@ -18,7 +18,7 @@ const Events = () => {
 		{
 			id: 6,
 			title: "Web Development",
-			description: "Learn and build web applications",
+			description: "Learn & Build web applications",
 			price: "50Rs per person (MITS) / 100Rs per person (others)",
 			teamSize: 1,
 			category: "technical",
@@ -132,46 +132,83 @@ const Events = () => {
 
 	const onFormSubmit = (e) => {
 		e.preventDefault();
+	
+		// Validate UTR number
 		if (utr.trim() === "") {
 			alert("Please enter UTR number");
 			return;
 		}
+	
+		// Validate mode of attendance if applicable
+		let modeOfAttendance = null;
+		if ((eventName === "Ideathon" || eventName === "Paper Presentation") && college.trim() !== "MITS") {
+			const selectedMode = document.querySelector('input[name="modeOfAttendance"]:checked');
+			if (!selectedMode) {
+				alert("Please select a mode of attendance");
+				return;
+			}
+			modeOfAttendance = selectedMode.value;
+		}
+	
+		// Collect team member names
 		const members = [];
 		document.querySelectorAll(".member").forEach((member) => {
 			members.push(member.value);
 		});
-
+	
+		// Prepare form data
 		const formData = {
 			name,
 			mobile,
 			rollno,
 			branch,
-			members: members,
+			members,
 			college,
 			eventId,
 			teamSize,
 			utr,
+			modeOfAttendance, // Include mode of attendance if applicable
 		};
-		console.log(formData);
+	
+		console.log("Form Data:", formData);
+	
+		// Store data in local storage
+		const storedData = JSON.parse(localStorage.getItem("eventRegistrations")) || [];
+		storedData.push(formData);
+		localStorage.setItem("eventRegistrations", JSON.stringify(storedData));
+	
+		// Submit form data to backend
 		fetch(`/register/`, {
-			// Use event ID in the URL path
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(formData),
 		})
-			.then((response) => response.json())
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				return response.text(); // Use text() instead of json() to handle empty responses
+			})
 			.then((data) => {
-				alert("Form submitted successfully");
-				console.log(data);
+				try {
+					const jsonData = JSON.parse(data); // Parse JSON if the response is not empty
+					alert("Form submitted successfully");
+					console.log(jsonData);
+				} catch (error) {
+					console.warn("Response is not valid JSON:", data);
+					alert("Form submitted successfully, but no additional data was returned.");
+				}
+	
+				// Reset form fields
 				setName("");
 				setMobile("");
 				setRollno("");
 				setBranch("");
 				setTeamSize(1);
 				setEventName("");
-				setCollege("");
+				setCollege("MITS");
 				setUtr("");
 				document.querySelectorAll(".member").forEach((member) => {
 					member.value = "";
@@ -271,8 +308,36 @@ const Events = () => {
 							id="branch"
 							value={branch}
 							onChange={(e) => setBranch(e.target.value)}
+							list="branch-options"
 							required
 						/>
+						<datalist id="branch-options">
+							<option value="CSE"></option>
+							<option value="CSE-AI"></option>
+							<option value="CSE-DS"></option>
+							<option value="CSE-CS"></option>
+							<option value="CSE-IT"></option>
+							<option value="CSE-AI&ML"></option>
+							<option value="ECE"></option>
+							<option value="EEE"></option>
+							<option value="MECH"></option>
+							<option value="CIVIL"></option>
+							<option value="MCA"></option>
+							<option value="MBA"></option>
+							<option value="Others"></option>
+						</datalist>
+						{branch === "Others" && (
+							<div className="input-field">
+								<input
+									type="text"
+									name="customBranch"
+									id="customBranch"
+									placeholder="Enter your branch"
+									onChange={(e) => setBranch(e.target.value)} // Update branch with custom input
+									required
+								/>
+							</div>
+						)}
 					</div>
 					<div className="input-field">
 						<span>Event: </span>
@@ -299,6 +364,31 @@ const Events = () => {
 							onChange={onTeamSizeChange}
 						/>
 					</div>
+					{/* Add radio buttons for mode of attendance */}
+					{(eventName === "Ideathon" || eventName === "Paper Presentation") &&
+						college.trim() !== "MITS" && (
+							<div className="input-field">
+								<span>Mode of Attendance:</span>
+								<label>
+									<input
+										type="radio"
+										name="modeOfAttendance"
+										value="Online"
+										required
+									/>
+									Online
+								</label>
+								<label>
+									<input
+										type="radio"
+										name="modeOfAttendance"
+										value="Offline"
+										required
+									/>
+									Offline
+								</label>
+							</div>
+						)}
 					{teamSize > 1 &&
 						teamSize < 11 &&
 						Array.from({ length: teamSize - 1 }, (_, index) => (
@@ -309,11 +399,10 @@ const Events = () => {
 									className="member"
 									name={`member${index}`}
 									id={`member${index}`}
-									placeholder={`Enter name ${
-										eventName !== "Ideathon"
-											? "(if applicable)"
-											: ""
-									}`}
+									placeholder={`Enter name ${eventName !== "Ideathon"
+										? "(if applicable)"
+										: ""
+										}`}
 								/>
 							</div>
 						))}
@@ -338,10 +427,9 @@ const Events = () => {
 						}}
 					>
 						<QRCode
-							value={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
-								teamSize *
+							value={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${teamSize *
 								(college.trim() === "MITS" ? 50 : 100)
-							}`}
+								}`}
 							size={128}
 							style={{ margin: "0 auto" }}
 							bgColor="transparent"
@@ -350,9 +438,8 @@ const Events = () => {
 					</div>
 					<p>or</p>
 					<a
-						href={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
-							teamSize * (college.trim() === "MITS" ? 50 : 100)
-						}`}
+						href={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${teamSize * (college.trim() === "MITS" ? 50 : 100)
+							}`}
 					>
 						₹ Click to pay
 					</a>
@@ -376,6 +463,16 @@ const Events = () => {
 					</p>
 					<button type="submit" onClick={onFormSubmit}>
 						Submit
+					</button>
+					<button
+						type="reset"
+						onClick={(e) => {
+							resetStates(e);
+							setEventName("");
+							setEventId(null);
+						}}
+					>
+						Cancel
 					</button>
 				</form>
 			</div>
