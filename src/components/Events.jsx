@@ -139,7 +139,7 @@ const Events = () => {
 			return;
 		}
 	
-		// Validate mode of attendance if applicable
+		// Validate mode of attendance or game selection if applicable
 		let modeOfAttendance = null;
 		if ((eventName === "Ideathon" || eventName === "Paper Presentation") && college.trim() !== "MITS") {
 			const selectedMode = document.querySelector('input[name="modeOfAttendance"]:checked');
@@ -148,6 +148,13 @@ const Events = () => {
 				return;
 			}
 			modeOfAttendance = selectedMode.value;
+		} else if (eventName === "E-Sports") {
+			const selectedGame = document.querySelector('input[name="gameSelection"]:checked');
+			if (!selectedGame) {
+				alert("Please select a game");
+				return;
+			}
+			modeOfAttendance = selectedGame.value; // Assign selected game to modeOfAttendance
 		}
 	
 		// Collect team member names
@@ -167,7 +174,7 @@ const Events = () => {
 			eventId,
 			teamSize,
 			utr,
-			modeOfAttendance, // Include mode of attendance if applicable
+			modeOfAttendance, // Include mode of attendance or game selection
 		};
 	
 		console.log("Form Data:", formData);
@@ -366,12 +373,12 @@ const Events = () => {
 						/>
 					</div>
 					{/* Add radio buttons for mode of attendance */}
-										{(eventName === "Ideathon" || eventName === "Paper Presentation") &&
-											college.trim() !== "MITS" && (
-												<div className="input-field">
-													<span>Mode of Attendance:</span>
-													<label>
-														<input
+					{(eventName === "Ideathon" || eventName === "Paper Presentation") &&
+						college.trim() !== "MITS" && (
+							<div className="input-field">
+								<span>Mode of Attendance:</span>
+								<label>
+									<input
 										type="radio"
 										name="modeOfAttendance"
 										value="Online"
@@ -390,6 +397,40 @@ const Events = () => {
 								</label>
 							</div>
 						)}
+					
+					{/* Add radio buttons for E-Sports */}
+					{eventName === "E-Sports" && (
+						<div className="input-field">
+							<span>Select Game:</span>
+							<label>
+								<input
+									type="radio"
+									name="gameSelection"
+									value="BGMI"
+									required
+								/>
+								BGMI
+							</label>
+							<label>
+								<input
+									type="radio"
+									name="gameSelection"
+									value="FreeFire"
+									required
+								/>
+								FreeFire
+							</label>
+							<label>
+								<input
+									type="radio"
+									name="gameSelection"
+									value="Ludo"
+									required
+								/>
+								Ludo
+							</label>
+						</div>
+					)}
 					{teamSize > 1 &&
 						teamSize < (eventName === "Ideathon" ? 4 : 11) &&
 						Array.from({ length: teamSize - 1 }, (_, index) => (
