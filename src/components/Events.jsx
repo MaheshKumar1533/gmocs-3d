@@ -52,7 +52,7 @@ const Events = () => {
 			title: "Ideathon",
 			description: "Pitch innovative ideas",
 			price: "50Rs per person (MITS) / 100Rs per person (others)",
-			teamSize: 3,
+			teamSize: 1,
 			category: "technical",
 		},
 		{
@@ -221,9 +221,10 @@ const Events = () => {
 	};
 	const onTeamSizeChange = (e) => {
 		const value = parseInt(e.target.value);
-		if (value > 10) {
-			alert("Team size cannot exceed 10");
-			setTeamSize(10);
+		const maxTeamSize = eventName === "Ideathon" ? 3 : 10;
+		if (value > maxTeamSize) {
+			alert(`Team size cannot exceed ${maxTeamSize}`);
+			setTeamSize(maxTeamSize);
 		} else if (value < 1) {
 			alert("Team size cannot be less than 1");
 			setTeamSize(1);
@@ -357,20 +358,20 @@ const Events = () => {
 							id="teamSize"
 							min={1}
 							max={10}
-							value={teamSize}
 							{...(eventName === "Ideathon"
-								? { disabled: true }
-								: {})}
+								? { max: 3 }
+								: {max:10})}
+							value={teamSize}
 							onChange={onTeamSizeChange}
 						/>
 					</div>
 					{/* Add radio buttons for mode of attendance */}
-					{(eventName === "Ideathon" || eventName === "Paper Presentation") &&
-						college.trim() !== "MITS" && (
-							<div className="input-field">
-								<span>Mode of Attendance:</span>
-								<label>
-									<input
+										{(eventName === "Ideathon" || eventName === "Paper Presentation") &&
+											college.trim() !== "MITS" && (
+												<div className="input-field">
+													<span>Mode of Attendance:</span>
+													<label>
+														<input
 										type="radio"
 										name="modeOfAttendance"
 										value="Online"
@@ -390,7 +391,7 @@ const Events = () => {
 							</div>
 						)}
 					{teamSize > 1 &&
-						teamSize < 11 &&
+						teamSize < (eventName === "Ideathon" ? 4 : 11) &&
 						Array.from({ length: teamSize - 1 }, (_, index) => (
 							<div className="input-field" key={index}>
 								<span>Member {index + 2}:</span>
@@ -399,10 +400,7 @@ const Events = () => {
 									className="member"
 									name={`member${index}`}
 									id={`member${index}`}
-									placeholder={`Enter name ${eventName !== "Ideathon"
-										? "(if applicable)"
-										: ""
-										}`}
+									placeholder={`Enter name`}
 								/>
 							</div>
 						))}
