@@ -14,6 +14,7 @@ const Events = () => {
 	const [eventId, setEventId] = useState(null);
 	const [college, setCollege] = useState("MITS");
 	const [utr, setUtr] = useState("");
+	const [modeOfParticipation, setModeOfParticipation] = useState("FreeFire");
 	const eventlist = [
 		{
 			id: 6,
@@ -132,37 +133,44 @@ const Events = () => {
 
 	const onFormSubmit = (e) => {
 		e.preventDefault();
-	
+
 		// Validate UTR number
 		if (utr.trim() === "") {
 			alert("Please enter UTR number");
 			return;
 		}
-	
+
 		// Validate mode of attendance or game selection if applicable
 		let modeOfAttendance = null;
-		if ((eventName === "Ideathon" || eventName === "Paper Presentation") && college.trim() !== "MITS") {
-			const selectedMode = document.querySelector('input[name="modeOfAttendance"]:checked');
+		if (
+			(eventName === "Ideathon" || eventName === "Paper Presentation") &&
+			college.trim() !== "MITS"
+		) {
+			const selectedMode = document.querySelector(
+				'input[name="modeOfAttendance"]:checked'
+			);
 			if (!selectedMode) {
 				alert("Please select a mode of attendance");
 				return;
 			}
 			modeOfAttendance = selectedMode.value;
 		} else if (eventName === "E-Sports") {
-			const selectedGame = document.querySelector('input[name="gameSelection"]:checked');
+			const selectedGame = document.querySelector(
+				'input[name="gameSelection"]:checked'
+			);
 			if (!selectedGame) {
 				alert("Please select a game");
 				return;
 			}
 			modeOfAttendance = selectedGame.value; // Assign selected game to modeOfAttendance
 		}
-	
+
 		// Collect team member names
 		const members = [];
 		document.querySelectorAll(".member").forEach((member) => {
 			members.push(member.value);
 		});
-	
+
 		// Prepare form data
 		const formData = {
 			name,
@@ -176,14 +184,15 @@ const Events = () => {
 			utr,
 			modeOfAttendance, // Include mode of attendance or game selection
 		};
-	
+
 		console.log("Form Data:", formData);
-	
+
 		// Store data in local storage
-		const storedData = JSON.parse(localStorage.getItem("eventRegistrations")) || [];
+		const storedData =
+			JSON.parse(localStorage.getItem("eventRegistrations")) || [];
 		storedData.push(formData);
 		localStorage.setItem("eventRegistrations", JSON.stringify(storedData));
-	
+
 		// Submit form data to backend
 		fetch(`/register/`, {
 			method: "POST",
@@ -205,9 +214,11 @@ const Events = () => {
 					console.log(jsonData);
 				} catch (error) {
 					console.warn("Response is not valid JSON:", data);
-					alert("Form submitted successfully, but no additional data was returned.");
+					alert(
+						"Form submitted successfully, but no additional data was returned."
+					);
 				}
-	
+
 				// Reset form fields
 				setName("");
 				setMobile("");
@@ -238,6 +249,21 @@ const Events = () => {
 		} else {
 			setTeamSize(value);
 		}
+	};
+
+	console.log(
+		`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
+			eventName !== "E-Sports"
+				? teamSize * (college.trim() === "MITS" ? 50 : 100)
+				: modeOfParticipation === "Ludo"
+				? 50
+				: 200
+		}`
+	);
+	console.log(name);
+
+	const handleesportchange = (event) => {
+		setModeOfParticipation(event.target.value);
 	};
 
 	return (
@@ -367,13 +393,14 @@ const Events = () => {
 							max={10}
 							{...(eventName === "Ideathon"
 								? { max: 3 }
-								: {max:10})}
+								: { max: 10 })}
 							value={teamSize}
 							onChange={onTeamSizeChange}
 						/>
 					</div>
 					{/* Add radio buttons for mode of attendance */}
-					{(eventName === "Ideathon" || eventName === "Paper Presentation") &&
+					{(eventName === "Ideathon" ||
+						eventName === "Paper Presentation") &&
 						college.trim() !== "MITS" && (
 							<div className="input-field">
 								<span>Mode of Attendance:</span>
@@ -397,7 +424,7 @@ const Events = () => {
 								</label>
 							</div>
 						)}
-					
+
 					{/* Add radio buttons for E-Sports */}
 					{eventName === "E-Sports" && (
 						<div className="input-field">
@@ -408,6 +435,8 @@ const Events = () => {
 									name="gameSelection"
 									value="BGMI"
 									required
+									checked={modeOfParticipation === "BGMI"}
+									onChange={handleesportchange}
 								/>
 								BGMI
 							</label>
@@ -417,6 +446,8 @@ const Events = () => {
 									name="gameSelection"
 									value="FreeFire"
 									required
+									checked={modeOfParticipation === "FreeFire"}
+									onChange={handleesportchange}
 								/>
 								FreeFire
 							</label>
@@ -426,6 +457,8 @@ const Events = () => {
 									name="gameSelection"
 									value="Ludo"
 									required
+									checked={modeOfParticipation === "Ludo"}
+									onChange={handleesportchange}
 								/>
 								Ludo
 							</label>
@@ -466,9 +499,14 @@ const Events = () => {
 						}}
 					>
 						<QRCode
-							value={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${teamSize *
-								(college.trim() === "MITS" ? 50 : 100)
-								}`}
+							value={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
+								eventName !== "E-Sports"
+									? teamSize *
+									  (college.trim() === "MITS" ? 50 : 100)
+									: modeOfParticipation === "Ludo"
+									? 50
+									: 200
+							}`}
 							size={128}
 							style={{ margin: "0 auto" }}
 							bgColor="transparent"
@@ -477,8 +515,14 @@ const Events = () => {
 					</div>
 					<p>or</p>
 					<a
-						href={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${teamSize * (college.trim() === "MITS" ? 50 : 100)
-							}`}
+						href={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
+							eventName !== "E-Sports"
+								? teamSize *
+								  (college.trim() === "MITS" ? 50 : 100)
+								: modeOfParticipation === "Ludo"
+								? 50
+								: 200
+						}`}
 					>
 						₹ Click to pay
 					</a>
