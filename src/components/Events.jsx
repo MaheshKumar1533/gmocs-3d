@@ -513,19 +513,6 @@ const Events = () => {
 							fgColor="#5a80d1"
 						/>
 					</div>
-					<p>or</p>
-					<a
-						href={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
-							eventName !== "E-Sports"
-								? teamSize *
-								  (college.trim() === "MITS" ? 50 : 100)
-								: modeOfParticipation === "Ludo"
-								? 50
-								: 200
-						}`}
-					>
-						₹ Click to pay
-					</a>
 					<p>After payment</p>
 					<div className="input-field">
 						<span>UTR: </span>
