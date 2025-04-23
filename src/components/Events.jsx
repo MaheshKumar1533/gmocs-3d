@@ -531,7 +531,7 @@ const Events = () => {
 									  (college.trim() === "MITS" ? 50 : 100)
 									: modeOfParticipation === "Ludo"
 									? (college.trim() === "MITS" ? 50 : 100)
-									: (college.trim() === "MITS" ? 200 : 400)
+									: (college.trim() === "MITS" ? 100 : 200)
 							}`}
 							size={128}
 							style={{ margin: "0 auto" }}
