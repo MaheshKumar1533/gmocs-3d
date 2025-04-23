@@ -1,21 +1,27 @@
-import Event from "./Event";
-import { useState } from "react";
-import "../index.css";
+import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { QRCode } from "react-qr-code";
-import { Link } from "react-router-dom";
+import "../index.css";
 
-const Events = () => {
+const EventDetails = () => {
+	const { id } = useParams(); // Get the event ID from URL
+	const eventId = parseInt(id);
+
+	// States for form data
 	const [name, setName] = useState("");
 	const [mobile, setMobile] = useState("");
 	const [rollno, setRollno] = useState("");
 	const [branch, setBranch] = useState("");
 	const [teamSize, setTeamSize] = useState(1);
 	const [eventName, setEventName] = useState("");
-	const [eventId, setEventId] = useState(null);
 	const [college, setCollege] = useState("MITS");
 	const [utr, setUtr] = useState("");
 	const [modeOfParticipation, setModeOfParticipation] = useState("FreeFire");
+	const [event, setEvent] = useState(null);
+	const [loading, setLoading] = useState(true);
+
+	// Event data - same as in Events component
 	const eventlist = [
 		{
 			id: 6,
@@ -122,16 +128,19 @@ const Events = () => {
 			category: "non-technical",
 		},
 	];
-	const resetStates = (e) => {
-		if (e.target === e.currentTarget) {
-			gsap.to(".event-form", {
-				top: "110vh",
-				duration: 0.5,
-				ease: "power2.out",
-			});
-		}
-	};
 
+	// Find the event based on ID
+	useEffect(() => {
+		const foundEvent = eventlist.find(e => e.id === eventId);
+		if (foundEvent) {
+			setEvent(foundEvent);
+			setEventName(foundEvent.title);
+			setTeamSize(foundEvent.teamSize);
+		}
+		setLoading(false);
+	}, [eventId]);
+
+	// Form submission handler - same as in Events component
 	const onFormSubmit = (e) => {
 		e.preventDefault();
 
@@ -238,6 +247,7 @@ const Events = () => {
 				alert("There was an error submitting the form");
 			});
 	};
+
 	const onTeamSizeChange = (e) => {
 		const value = parseInt(e.target.value);
 		const maxTeamSize = eventName === "Ideathon" ? 3 : 10;
@@ -252,27 +262,29 @@ const Events = () => {
 		}
 	};
 
-	console.log(
-		`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
-			eventName !== "E-Sports"
-				? teamSize * (college.trim() === "MITS" ? 50 : 100)
-				: modeOfParticipation === "Ludo"
-				? 50
-				: 200
-		}`
-	);
-	console.log(name);
-
 	const handleesportchange = (event) => {
 		setModeOfParticipation(event.target.value);
 	};
+
+	if (loading) {
+		return <div>Loading...</div>;
+	}
+
+	if (!event) {
+		return (
+			<div className="event-not-found">
+				<h1>Event not found</h1>
+				<Link to="/events">Back to all events</Link>
+			</div>
+		);
+	}
 
 	return (
 		<>
 			{window.innerWidth > 480 ? (
 				<div className="header">
 					<img src="/static/img/MITSLogo.png" alt="" />
-					<h1>GMOCS 2k25 EVENTS</h1>
+					<h1>GMOCS 2k25 EVENT REGISTRATION</h1>
 					<img src="/static/img/GMOCSLogo.png" alt="" />
 				</div>
 			) : (
@@ -281,51 +293,14 @@ const Events = () => {
 					<img src="/static/img/GMOCSLogo.png" alt="" />
 				</div>
 			)}
-			<div className="events" onClick={resetStates}>
-				{eventlist.map((event, index) => (
-					<Event
-						key={index}
-						name={event.title}
-						desc={event.description}
-						price={event.price}
-						number={index + 1}
-						length={eventlist.length}
-						teamSize={event.teamSize}
-						setTeamSize={setTeamSize}
-						setEventName={setEventName}
-						setEventId={setEventId}
-						eventId={event.id}
-						category={event.category}
-					/>
-				))}	
-				<h1 className="technical-heading">Technical</h1>
-				<h1 className="non-technical-heading">Non-Technical</h1>
-				
-				{/* Direct Links to Event Pages */}
-				{/* <div className="event-direct-links" style={{ position: "absolute", bottom: "20px", left: "20px", zIndex: 1000, background: "rgba(5, 26, 87, 0.8)", padding: "10px", borderRadius: "5px", color: "#fff" }}>
-					<h3>Quick Registration Links:</h3>
-					<div style={{ display: "flex", flexWrap: "wrap", gap: "5px", maxWidth: "400px" }}>
-						{eventlist.map((event) => (
-							<Link 
-								key={event.id} 
-								to={`/events/${event.id}`} 
-								style={{ 
-									background: "#304dd1",
-									padding: "5px 10px",
-									borderRadius: "4px",
-									color: "white",
-									textDecoration: "none",
-									margin: "2px",
-									fontSize: "0.8rem"
-								}}
-							>
-								{event.title}
-							</Link>
-						))}
-					</div>
+			<div className="events event-details-page">
+				{/* <div className="event-details">
+					<h2>{event.title}</h2>
+					<p>{event.description}</p>
+					<p className="price">{event.price}</p>
 				</div> */}
 				
-				<form className="event-form">
+				<div className="event-form" style={{ top: "7vh", position: "relative", maxWidth: "600px", margin: "0 auto", maxHeight: "75vh" }}>
 					<h1>Register - {eventName}</h1>
 					<div className="input-field">
 						<span>Name:</span>
@@ -560,20 +535,15 @@ const Events = () => {
 					<button type="submit" onClick={onFormSubmit}>
 						Submit
 					</button>
-					<button
-						type="reset"
-						onClick={(e) => {
-							resetStates(e);
-							setEventName("");
-							setEventId(null);
-						}}
-					>
-						Cancel
-					</button>
-				</form>
+					<Link to="/events">
+						<button type="reset" >
+							Back to Events
+						</button>
+					</Link>
+				</div>
 			</div>
 		</>
 	);
 };
 
-export default Events;
+export default EventDetails;
