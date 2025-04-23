@@ -210,9 +210,8 @@ const Events = () => {
 			})
 			.then((data) => {
 				try {
-					const jsonData = JSON.parse(data); // Parse JSON if the response is not empty
-					alert("Form submitted successfully");
-					console.log(jsonData);
+					const jsonData = JSON.parse(data);
+					alert(jsonData.message);
 				} catch (error) {
 					console.warn("Response is not valid JSON:", data);
 					alert(
@@ -297,10 +296,10 @@ const Events = () => {
 						eventId={event.id}
 						category={event.category}
 					/>
-				))}	
+				))}
 				<h1 className="technical-heading">Technical</h1>
 				<h1 className="non-technical-heading">Non-Technical</h1>
-				
+
 				{/* Direct Links to Event Pages */}
 				{/* <div className="event-direct-links" style={{ position: "absolute", bottom: "20px", left: "20px", zIndex: 1000, background: "rgba(5, 26, 87, 0.8)", padding: "10px", borderRadius: "5px", color: "#fff" }}>
 					<h3>Quick Registration Links:</h3>
@@ -324,7 +323,7 @@ const Events = () => {
 						))}
 					</div>
 				</div> */}
-				
+
 				<form className="event-form">
 					<h1>Register - {eventName}</h1>
 					<div className="input-field">
@@ -530,8 +529,12 @@ const Events = () => {
 									? teamSize *
 									  (college.trim() === "MITS" ? 50 : 100)
 									: modeOfParticipation === "Ludo"
-									? (college.trim() === "MITS" ? 50 : 100)
-									: (college.trim() === "MITS" ? 100 : 200)
+									? college.trim() === "MITS"
+										? 50
+										: 100
+									: college.trim() === "MITS"
+									? 100
+									: 200
 							}`}
 							size={128}
 							style={{ margin: "0 auto" }}
