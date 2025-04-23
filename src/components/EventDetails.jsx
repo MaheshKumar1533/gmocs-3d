@@ -131,7 +131,7 @@ const EventDetails = () => {
 
 	// Find the event based on ID
 	useEffect(() => {
-		const foundEvent = eventlist.find(e => e.id === eventId);
+		const foundEvent = eventlist.find((e) => e.id === eventId);
 		if (foundEvent) {
 			setEvent(foundEvent);
 			setEventName(foundEvent.title);
@@ -220,8 +220,7 @@ const EventDetails = () => {
 			.then((data) => {
 				try {
 					const jsonData = JSON.parse(data); // Parse JSON if the response is not empty
-					alert("Form submitted successfully");
-					console.log(jsonData);
+					alert(jsonData.message);
 				} catch (error) {
 					console.warn("Response is not valid JSON:", data);
 					alert(
@@ -299,8 +298,17 @@ const EventDetails = () => {
 					<p>{event.description}</p>
 					<p className="price">{event.price}</p>
 				</div> */}
-				
-				<div className="event-form" style={{ top: "7vh", position: "relative", maxWidth: "600px", margin: "0 auto", maxHeight: "75vh" }}>
+
+				<div
+					className="event-form"
+					style={{
+						top: "7vh",
+						position: "relative",
+						maxWidth: "600px",
+						margin: "0 auto",
+						maxHeight: "75vh",
+					}}
+				>
 					<h1>Register - {eventName}</h1>
 					<div className="input-field">
 						<span>Name:</span>
@@ -505,8 +513,12 @@ const EventDetails = () => {
 									? teamSize *
 									  (college.trim() === "MITS" ? 50 : 100)
 									: modeOfParticipation === "Ludo"
-									? (college.trim() === "MITS" ? 50 : 100)
-									: (college.trim() === "MITS" ? 100 : 200)
+									? college.trim() === "MITS"
+										? 50
+										: 100
+									: college.trim() === "MITS"
+									? 100
+									: 200
 							}`}
 							size={128}
 							style={{ margin: "0 auto" }}
@@ -536,9 +548,7 @@ const EventDetails = () => {
 						Submit
 					</button>
 					<Link to="/events">
-						<button type="reset" >
-							Back to Events
-						</button>
+						<button type="reset">Back to Events</button>
 					</Link>
 				</div>
 			</div>
