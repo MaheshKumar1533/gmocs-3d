@@ -119,14 +119,14 @@ const EventDetails = () => {
 			teamSize: 1,
 			category: "non-technical",
 		},
-		{
-			id: 1,
-			title: "E-Sports",
-			description: "Compete in gaming tournaments",
-			price: "50Rs per person (MITS) / 100Rs per person (others)",
-			teamSize: 1,
-			category: "non-technical",
-		},
+		// {
+		// 	id: 1,
+		// 	title: "E-Sports",
+		// 	description: "Compete in gaming tournaments",
+		// 	price: "50Rs per person (MITS) / 100Rs per person (others)",
+		// 	teamSize: 1,
+		// 	category: "non-technical",
+		// },
 	];
 
 	// Find the event based on ID
@@ -264,6 +264,23 @@ const EventDetails = () => {
 	const handleesportchange = (event) => {
 		setModeOfParticipation(event.target.value);
 	};
+
+	const [upiId, setUpiId] = useState("maheshkumarvmk@ybl");
+
+	useEffect(() => {
+		const fetchUpiId = async () => {
+			try {
+				const response = await fetch("/get_upi_id");
+				if (response.ok) {
+					const data = await response.text();
+					setUpiId(data);
+				}
+			} catch (error) {
+				console.error("Failed to fetch UPI ID:", error);
+			}
+		};
+		fetchUpiId();
+	}, []);
 
 	if (loading) {
 		return <div>Loading...</div>;
@@ -508,7 +525,7 @@ const EventDetails = () => {
 						}}
 					>
 						<QRCode
-							value={`upi://pay?pa=hvijapuram-3@okaxis&mc=0000&mode=02&purpose=00&am=${
+							value={`upi://pay?pa=${upiId}&mc=0000&mode=02&purpose=00&am=${
 								eventName !== "E-Sports"
 									? teamSize *
 									  (college.trim() === "MITS" ? 50 : 100)
