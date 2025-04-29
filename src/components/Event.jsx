@@ -15,6 +15,7 @@ const Event = ({
 	setEventId,
 	eventId,
 	category,
+	eventStatus,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const mid = length / 2;
@@ -44,7 +45,7 @@ const Event = ({
 		backfaceVisibility: "hidden",
 		zIndex: 2,
 	};
-	
+
 	const backStyles = {
 		position: "absolute",
 		maxWidth: "100%",
@@ -228,8 +229,14 @@ const Event = ({
 						>
 							Registration Fees: {price}
 						</p>
-						<button className="btn" onClick={onRegisterClick}>
-							Register Now
+						<button
+							className="btn"
+							onClick={onRegisterClick}
+							disabled={eventStatus === "closed"}
+						>
+							{eventStatus === "closed"
+								? "Registration Closed"
+								: "Register Now"}
 						</button>
 					</div>
 				</div>

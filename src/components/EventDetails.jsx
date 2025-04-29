@@ -23,14 +23,14 @@ const EventDetails = () => {
 
 	// Event data - same as in Events component
 	const eventlist = [
-		{
-			id: 6,
-			title: "Web Development",
-			description: "Learn & Build web applications",
-			price: "50Rs per person (MITS) / 100Rs per person (others)",
-			teamSize: 1,
-			category: "technical",
-		},
+		// {
+		// 	id: 6,
+		// 	title: "Web Development",
+		// 	description: "Learn & Build web applications",
+		// 	price: "50Rs per person (MITS) / 100Rs per person (others)",
+		// 	teamSize: 1,
+		// 	category: "technical",
+		// },
 		{
 			id: 7,
 			title: "UI/UX",
@@ -508,7 +508,7 @@ const EventDetails = () => {
 						}}
 					>
 						<QRCode
-							value={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
+							value={`upi://pay?pa=hvijapuram-3@okaxis&mc=0000&mode=02&purpose=00&am=${
 								eventName !== "E-Sports"
 									? teamSize *
 									  (college.trim() === "MITS" ? 50 : 100)
