@@ -524,7 +524,7 @@ const Events = () => {
 						}}
 					>
 						<QRCode
-							value={`upi://pay?pa=8309547073@ibl&mc=0000&mode=02&purpose=00&am=${
+							value={`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
 								eventName !== "E-Sports"
 									? teamSize *
 									  (college.trim() === "MITS" ? 50 : 100)
