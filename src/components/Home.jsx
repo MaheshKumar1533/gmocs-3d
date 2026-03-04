@@ -1,7 +1,5 @@
 import Spline from "@splinetool/react-spline";
-import gsap from "gsap";
 import AboutGMOCS from "./AboutGMOCS";
-import Sponsors from "./Sponsors";
 
 export default function Home() {
 	if (window.innerWidth < 480) {
@@ -24,7 +22,6 @@ export default function Home() {
 					</button>
 				</div>
 				<AboutGMOCS />
-				<Sponsors />
 			</div>
 		</>
 	);
