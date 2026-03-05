@@ -10,7 +10,7 @@ export default function Home() {
 			<div className="home">
 				<div className="hero-section">
 					<Spline
-						scene="https://prod.spline.design/bwaZOv-eoBjL9PSP/scene.splinecode"
+						scene="https://prod.spline.design/lcX0Rs3X3ahwS4Sm/scene.splinecode"
 						style={{
 							width: "100vw",
 							height: "100vh",
