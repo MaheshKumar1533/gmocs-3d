@@ -254,10 +254,9 @@ const Events = () => {
 	};
 
 	console.log(
-		`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${
-			eventName !== "E-Sports"
-				? teamSize * (college.trim() === "MITS" ? 50 : 100)
-				: modeOfParticipation === "Ludo"
+		`upi://pay?pa=maheshkumarvmk@ybl&pn=Vaileti%20Mahesh%20Kumar&mc=0000&mode=02&purpose=00&am=${eventName !== "E-Sports"
+			? teamSize * (college.trim() === "MITS" ? 50 : 100)
+			: modeOfParticipation === "Ludo"
 				? 50
 				: 200
 		}`
@@ -290,7 +289,7 @@ const Events = () => {
 			{window.innerWidth > 480 ? (
 				<div className="header">
 					<img src="/static/img/MITSLogo.png" alt="" />
-					<h1>GMOCS 2k25 EVENTS</h1>
+					<h1>GMOCS 2k26 EVENTS</h1>
 					<img src="/static/img/GMOCSLogo.png" alt="" />
 				</div>
 			) : (
@@ -548,18 +547,17 @@ const Events = () => {
 						}}
 					>
 						<QRCode
-							value={`upi://pay?pa=${upiId}&mc=0000&mode=02&purpose=00&am=${
-								eventName !== "E-Sports"
+							value={`upi://pay?pa=${upiId}&mc=0000&mode=02&purpose=00&am=${eventName !== "E-Sports"
 									? teamSize *
-									  (college.trim() === "MITS" ? 50 : 100)
+									(college.trim() === "MITS" ? 50 : 100)
 									: modeOfParticipation === "Ludo"
-									? college.trim() === "MITS"
-										? 50
-										: 100
-									: college.trim() === "MITS"
-									? 100
-									: 200
-							}`}
+										? college.trim() === "MITS"
+											? 50
+											: 100
+										: college.trim() === "MITS"
+											? 100
+											: 200
+								}`}
 							size={128}
 							style={{ margin: "0 auto" }}
 							bgColor="transparent"

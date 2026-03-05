@@ -1,5 +1,5 @@
 const AboutGMOCS = () => {
-  return (
+	return (
 		<div className="about-gmocs">
 			<h1>
 				About <span>G</span>MOCS
@@ -19,15 +19,10 @@ const AboutGMOCS = () => {
 					<strong>
 						Madanapalle Institute of Technology & Science (MITS)
 					</strong>
-					, Andhra Pradesh. The event is organized in collaboration
-					with the <strong>Computer Society of India (CSI)</strong>{" "}
-					and the{" "}
-					<strong>Institution’s Innovation Council (IIC)</strong>,
-					both of which are esteemed bodies encouraging innovation and
-					professional development in students. Celebrating
+					, Andhra Pradesh. Celebrating
 					creativity, technical prowess, and collaborative spirit,{" "}
-					<strong>GMOCS-2k25</strong> is scheduled for{" "}
-					<strong>30th April, 2025</strong>. It promises to be a
+					<strong>GMOCS-2k26</strong> is scheduled for{" "}
+					<strong>2nd April, 2026</strong>. It promises to be a
 					dynamic gathering of budding engineers, tech enthusiasts,
 					and innovators from various institutions across the country.
 					This symposium is a unique opportunity for students to
@@ -42,7 +37,7 @@ const AboutGMOCS = () => {
 					entertaining Duo Performances (ShowDUOn), Team Building
 					Challenges (Synergy Challenge), Creative Writing Contests
 					(Scribble), and thrilling E-Sports tournaments. Highlights
-					of GMOCS-2k25 include opportunities to compete in both
+					of GMOCS-2k26 include opportunities to compete in both
 					technical and non-technical domains, interaction with peers
 					and professionals from diverse backgrounds, exciting prizes
 					and certificates for winners and participants, affordable
@@ -55,15 +50,16 @@ const AboutGMOCS = () => {
 					</strong>
 					, <strong>Mrs. Keerthi Nadella (Patron)</strong>,{" "}
 					<strong>Dr. C. Yuvaraj (Program Chair)</strong>,{" "}
+					<strong>Dr. C. P. Gupta (Convenor)</strong>,{" "}
 					<strong>Dr. M. Sreedevi (Convenor)</strong>, and supported
 					by a passionate team of faculty and student coordinators. We
 					invite all the young minds to participate, learn, and shine
-					at <strong>GMOCS-2k25</strong>. Step into a world where
+					at <strong>GMOCS-2k26</strong>. Step into a world where
 					innovation meets inspiration!
 				</p>
 			</section>
 		</div>
-  );
+	);
 };
 
 export default AboutGMOCS;
