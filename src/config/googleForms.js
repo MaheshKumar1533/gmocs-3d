@@ -14,6 +14,7 @@ export const googleFormUrls = {
     10: "https://forms.gle/EdV1XydVCsXUoNYH6", // Movie Mania
     11: "https://forms.gle/C4CniG4BDUB4Vuuw6", // Scribble
     12: "https://forms.gle/eXTKdYKMjt3YkWyUA", // Synergy Challenge
+    13: "https://forms.gle/9WiFShFF9iVjiRUg7"
 };
 
 // Function to get Google Form URL for an event

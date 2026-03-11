@@ -77,6 +77,12 @@ const Events = () => {
 			description: "Collaborate and solve challenges",
 			category: "non-technical",
 		},
+		{
+			id: 13,
+			title: "Showduoon",
+			description: "Bring up team spirit",
+			category: "non-technical",
+		},
 	];
 	return (
 		<>

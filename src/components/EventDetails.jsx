@@ -28,6 +28,7 @@ const EventDetails = () => {
 		{ id: 10, title: "Movie Mania", category: "non-technical" },
 		{ id: 11, title: "Scribble", category: "non-technical" },
 		{ id: 12, title: "Synergy Challenge", category: "non-technical" },
+		{ id: 13, title: "Showduoon", category: "non-technical" }
 	];
 
 	// Find the event based on ID
