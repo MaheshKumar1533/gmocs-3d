@@ -3,8 +3,8 @@ import AboutGMOCS from "./AboutGMOCS";
 
 export default function Home() {
 	if (window.innerWidth < 480) {
-		window.location.href = "/mobile";
-	}
+		window.location.href = "/mobile.html";
+	} 
 	return (
 		<>
 			<div className="home">

@@ -1,6 +1,7 @@
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { redirectToGoogleForm } from "../config/googleForms";
 gsap.registerPlugin(useGSAP);
 
 const Event = ({
@@ -9,16 +10,13 @@ const Event = ({
 	price,
 	number,
 	length,
-	teamSize,
-	setTeamSize,
-	setEventName,
-	setEventId,
 	eventId,
 	category,
 	eventStatus,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const mid = length / 2;
+	const cardRef = useRef(null);
 
 	// Add realistic book fold and shadow styles
 	const cardStyles = {
@@ -55,21 +53,21 @@ const Event = ({
 	};
 
 	useGSAP(() => {
-		gsap.to(`#event-${number}`, {
+		gsap.to(cardRef.current, {
 			x: 50 * (number - mid),
 			y: Math.abs(3 * (number - mid)),
 			transformOrigin: "50% 100%",
 			duration: 1,
 			transitionTimingFunction: "linear",
 		});
-		gsap.to(`#event-${number}`, {
+		gsap.to(cardRef.current, {
 			rotate: `${5 * (number - mid)}deg`,
 		});
 	});
 
 	const onMouseHover = () => {
 		if (!isOpen) {
-			gsap.to(`#event-${number}`, {
+			gsap.to(cardRef.current, {
 				x: 50 * (number - mid),
 				y: Math.abs(3 * (number - mid)),
 				scale: 1.1,
@@ -82,7 +80,7 @@ const Event = ({
 
 	const onMouseLeave = () => {
 		if (!isOpen) {
-			gsap.to(`#event-${number}`, {
+			gsap.to(cardRef.current, {
 				x: 50 * (number - mid),
 				y: Math.abs(3 * (number - mid)),
 				scale: 1,
@@ -96,12 +94,7 @@ const Event = ({
 	const onClick = () => {
 		setIsOpen(!isOpen);
 		if (!isOpen) {
-			gsap.to(".event-form", {
-				top: "110vh",
-				duration: 0.5,
-				ease: "power2.out",
-			});
-			gsap.to(`#event-${number}`, {
+			gsap.to(cardRef.current, {
 				x: 0,
 				y: 0,
 				scale: 1.5,
@@ -112,13 +105,13 @@ const Event = ({
 				duration: 0.6,
 				ease: "power2.out",
 			});
-			gsap.to(`#event-${number} .front`, {
+			gsap.to(cardRef.current.querySelector('.front'), {
 				opacity: 0,
 				duration: 0.3,
 				zIndex: 1,
 				ease: "power2.inOut",
 				onComplete: () => {
-					gsap.to(`#event-${number} .back`, {
+					gsap.to(cardRef.current.querySelector('.back'), {
 						opacity: 1,
 						duration: 0.3,
 						zIndex: 2,
@@ -127,7 +120,7 @@ const Event = ({
 				},
 			});
 		} else {
-			gsap.to(`#event-${number}`, {
+			gsap.to(cardRef.current, {
 				x: 50 * (number - mid),
 				y: Math.abs(3 * (number - mid)),
 				scale: 1,
@@ -138,13 +131,13 @@ const Event = ({
 				duration: 0.6,
 				ease: "power2.inOut",
 			});
-			gsap.to(`#event-${number} .back`, {
+			gsap.to(cardRef.current.querySelector('.back'), {
 				opacity: 0,
 				duration: 0.3,
 				zIndex: 1,
 				ease: "power2.inOut",
 				onComplete: () => {
-					gsap.to(`#event-${number} .front`, {
+					gsap.to(cardRef.current.querySelector('.front'), {
 						opacity: 1,
 						duration: 0.3,
 						zIndex: 2,
@@ -155,21 +148,16 @@ const Event = ({
 		}
 	};
 
-	const onRegisterClick = () => {
-		setTeamSize(teamSize);
-		setEventName(name);
-		setEventId(eventId); // Set the event ID when registering
-		gsap.to(".event-form", {
-			top: "0vh",
-			duration: 0.5,
-			ease: "power2.out",
-		});
+	const onRegisterClick = (e) => {
+		e.stopPropagation();
+		redirectToGoogleForm(eventId);
 	};
 
 	return (
 		<div
 			className={`event ${isOpen ? "open" : ""}`}
-			id={`event-${number}`}
+			id={`event-${eventId}`}
+			ref={cardRef}
 			style={{ zIndex: number, ...styles, overflow: "auto" }}
 			onMouseOver={onMouseHover}
 			onMouseOut={onMouseLeave}
